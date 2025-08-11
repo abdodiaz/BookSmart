@@ -1,0 +1,104 @@
+booksmart/
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py                  # Point d'entrée FastAPI
+│   │   ├── database.py              # Connexion à PostgreSQL avec SQLAlchemy
+│   │   ├── models/                  # Modèles SQLAlchemy (Livres, Adhérents, Emprunts, etc.)
+│   │   │   ├── __init__.py
+│   │   │   ├── book.py
+│   │   │   ├── user.py
+│   │   │   ├── loan.py
+│   │   │   └── recommendation.py
+│   │   ├── schemas/                 # Modèles Pydantic pour validation des données
+│   │   │   ├── __init__.py
+│   │   │   ├── book.py
+│   │   │   ├── user.py
+│   │   │   ├── loan.py
+│   │   │   └── recommendation.py
+│   │   ├── crud/                    # Fonctions CRUD (create, read, update, delete)
+│   │   │   ├── __init__.py
+│   │   │   ├── book.py
+│   │   │   ├── user.py
+│   │   │   ├── loan.py
+│   │   │   └── recommendation.py
+│   │   ├── api/                     # Routes FastAPI séparées par modules
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py              # Inscription, connexion, JWT
+│   │   │   ├── books.py
+│   │   │   ├── users.py
+│   │   │   ├── loans.py
+│   │   │   └── recommendations.py
+│   │   ├── services/                # Logiques métiers (recommandation, scraping, etc.)
+│   │   │   ├── __init__.py
+│   │   │   ├── scraping.py          # Script Selenium + parsing
+│   │   │   └── recommendation.py   # Fonction cosine similarity etc.
+│   │   ├── core/                    # Configuration, sécurité (auth, hashing)
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py            # Variables d'environnement, secrets
+│   │   │   ├── security.py          # JWT, hashing des mots de passe
+│   │   │   └── dependencies.py     # Gestion dépendances FastAPI (ex: session DB)
+│   │   └── utils/                   # Fonctions utilitaires générales
+│   │
+│   └── requirements.txt             # Dépendances Python
+│
+├── frontend/
+│   ├── public/
+│   │   ├── images/                  # Couvertures des livres, icônes, etc.
+│   │   └── css/                     # Fichiers CSS Tailwind ou Bootstrap compilés
+│   ├── templates/                   # Pages HTML (Jinja2 si besoin)
+│   │   ├── base.html                # Layout commun (header, footer, menu)
+│   │   ├── index.html               # Page d’accueil
+│   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── catalog.html             # Liste des livres avec recherche
+│   │   ├── my_loans.html            # Emprunts de l’utilisateur
+│   │   ├── recommendations.html
+│   │   └── admin/                   # Pages admin (gestion livres, adhérents)
+│   │       ├── dashboard.html
+│   │       ├── manage_books.html
+│   │       └── manage_users.html
+│   └── js/                         # Scripts JS si nécessaire
+│
+├── tests/                          # Tests unitaires / d’intégration (pytest)
+│
+├── docs/                           # Documentation (README, UML, notes)
+│
+└── scraping/                      # Scripts indépendants de scraping Selenium
+    └── scraper.py
+
+Explications clés
+
+    backend/app/main.py : Lance FastAPI et inclut les routes via include_router.
+
+    models/ : Définition des tables SQLAlchemy.
+
+    schemas/ : Validation des données entrantes et sortantes avec Pydantic.
+
+    crud/ : Fonctions de gestion de la BDD, évite de mettre la logique dans les routes.
+
+    api/ : Organisation des endpoints REST API par fonctionnalités.
+
+    services/ : Logique métier comme la recommandation (cosine similarity), et scraping (Selenium).
+
+    core/ : Config globale, sécurité, gestion des dépendances FastAPI.
+
+    frontend/ : Tout le côté client en HTML/CSS + JS, séparé du backend.
+
+    scraping/ : Scripts dédiés pour extraire les livres de books.toscrape.com avec Selenium.
+
+Tech & bonnes pratiques
+
+    Utiliser async def dans FastAPI pour les appels I/O (DB, scraping).
+
+    Gestion propre des sessions DB avec dépendances FastAPI.
+
+    Sécurité avec JWT et mots de passe hachés (bcrypt).
+
+    Validation forte côté backend avec Pydantic.
+
+    Frontend responsive avec Tailwind ou Bootstrap.
+
+    Modularité claire pour faciliter la maintenance et les tests.
+
+    Tests automatisés dans /tests.
