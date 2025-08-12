@@ -78,11 +78,3 @@ class BooksToScraper:
         except:
             return "Unknown Rating"
         
-
-# Faire une instance de BooksToScraper et lancer le scraping
-booktoscrape=BooksToScraper(driver_path=r'C:\Users\lenovo\Documents\BookSmart\backend\scraping\chromedriver.exe',headless=True)
-df=booktoscrape.scrape_books()
-print("Scraping terminé. Nombre de livres récupérés :", len(df))
-
-# Recuperer les données dans un fichier CSV
-df.to_csv(r'C:\Users\lenovo\Documents\BookSmart\data\livres_bruts.csv', index=False)

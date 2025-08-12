@@ -4,21 +4,20 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 
-# charger le DataFrame nettoyé
-df_cleaned = pd.read_csv(r'C:\Users\lenovo\Documents\BookSmart\data\livres_nettoyes.csv')
+def modele_recommandation(df):
 
-# Extraire la colonne 'Description' pour le traitement
-descriptions = df_cleaned['Description']
+    # Extraire la colonne 'Description' pour le traitement
+    descriptions = df['Description']
 
-# TF-IDF Vectorizer
-vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
-tfidf_matrix = vectorizer.fit_transform(descriptions)
+    # TF-IDF Vectorizer
+    vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
+    tfidf_matrix = vectorizer.fit_transform(descriptions)
 
-# Calcul de la matrice de similarité cosinus
-cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+    # Calcul de la matrice de similarité cosinus
+    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
-#  Sauvegarder le modèle vectorizer et la matrice de similarité
-joblib.dump(vectorizer, r'C:\Users\lenovo\Documents\BookSmart\backend\recommender\tfidf_vectorizer.joblib')
-joblib.dump(cosine_sim, r'C:\Users\lenovo\Documents\BookSmart\backend\recommender\cosine_similarity_matrix.joblib')
+    # Sauvegarder le modèle vectorizer et la matrice de similarité
+    joblib.dump(vectorizer, r'C:\Users\lenovo\Documents\BookSmart\backend\recommender\tfidf_vectorizer.joblib')
+    joblib.dump(cosine_sim, r'C:\Users\lenovo\Documents\BookSmart\backend\recommender\cosine_similarity_matrix.joblib')
 
-print("Modèle et matrice sauvegardés avec succès.")
+    print("Modèle et matrice sauvegardés avec succès.")
