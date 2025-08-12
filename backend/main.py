@@ -1,12 +1,14 @@
 from fastapi import FastAPI
-from backend.database import Base, engine
+from backend.database import engine, Base
 from backend import models
+from backend.routes import users  # Import du routeur users
 
-# Création des tables
+app = FastAPI()
+
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="BookSmart API")
+app.include_router(users.router)
 
 @app.get("/")
-def root():
-    return {"message": "Bienvenue dans l'API BookSmart"}
+async def root():
+    return {"message": "API BookSmart fonctionne !"}
