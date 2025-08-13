@@ -37,7 +37,7 @@ class BooksToScraper:
                         "titre": self.get_text("h1", "Unknown Title"),
                         "prix": self.get_text(".price_color", "Unknown Price"),
                         "image_url": self.get_attr(".item img", "src", "No Image"),
-                        "Rating": self.get_rating(),
+                        "rating": self.get_rating(),
                         "stock": self.get_text(".availability", "Unknown Availability").strip(),
                         "description": self.get_text("#product_description + p", "No description available")
                     })
