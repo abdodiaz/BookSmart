@@ -6,8 +6,8 @@ import joblib
 
 def modele_recommandation(df):
 
-    # Extraire la colonne 'Description' pour le traitement
-    descriptions = df['Description']
+    # Extraire la colonne 'description' pour le traitement
+    descriptions = df['description']
 
     # TF-IDF Vectorizer
     vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')

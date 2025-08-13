@@ -41,18 +41,18 @@ def clean_all(df: pd.DataFrame) -> pd.DataFrame:
         return rating_map.get(str(txt), np.nan)
 
     # traitements
-    if 'Description' in df.columns:
-        df['Description'] = df['Description'].apply(nettoyer_texte)
-        mask = df['Description'].str.lower() == "no description available"
-        df.loc[mask, 'Description'] = df['Title']
+    if 'description' in df.columns:
+        df['description'] = df['description'].apply(nettoyer_texte)
+        mask = df['description'].str.lower() == "no description available"
+        df.loc[mask, 'description'] = df['titre']
 
-    if 'Price' in df.columns:
-        df['Price'] = df['Price'].apply(prix_float)
+    if 'prix' in df.columns:
+        df['prix'] = df['prix'].apply(prix_float)
 
-    if 'Availability' in df.columns:
-        df['Availability'] = df['Availability'].apply(int_disponibilite)
+    if 'stock' in df.columns:
+        df['stock'] = df['stock'].apply(int_disponibilite)
 
-    if 'Rating' in df.columns:
-        df['Rating'] = df['Rating'].apply(int_rating)
+    if 'rating' in df.columns:
+        df['rating'] = df['rating'].apply(int_rating)
 
     return df

@@ -1,9 +1,9 @@
-from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey, TIMESTAMP
+from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey, TIMESTAMP,Float
 from sqlalchemy.orm import relationship
 from backend.database import Base
 from datetime import datetime
 
-# Modèle pour les adhérents
+
 class Adherent(Base):
     __tablename__ = "adherents"
 
@@ -19,12 +19,13 @@ class Adherent(Base):
     historique = relationship("HistoriqueEmprunt", back_populates="adherent")
     notifications = relationship("Notification", back_populates="adherent")
 
-# Modèles pour les livres, emprunts, réservations et historique d'emprunt
+
 class Livre(Base):
     __tablename__ = "livres"
 
     id = Column(Integer, primary_key=True, index=True)
     titre = Column(String(255), nullable=False)
+    prix = Column(Float, nullable=False)
     description = Column(Text)
     image_url = Column(Text)
     stock = Column(Integer, default=1)
@@ -34,7 +35,7 @@ class Livre(Base):
     reservations = relationship("Reservation", back_populates="livre")
     historique = relationship("HistoriqueEmprunt", back_populates="livre")
 
-# Modèles pour les emprunts, réservations et historique d'emprunt
+
 class Emprunt(Base):
     __tablename__ = "emprunts"
 
@@ -49,7 +50,6 @@ class Emprunt(Base):
     livre = relationship("Livre", back_populates="emprunts")
 
 
-# Modèle pour les réservations
 class Reservation(Base):
     __tablename__ = "reservations"
 
@@ -62,7 +62,7 @@ class Reservation(Base):
     adherent = relationship("Adherent", back_populates="reservations")
     livre = relationship("Livre", back_populates="reservations")
 
-# Modèle pour l'historique des emprunts
+
 class HistoriqueEmprunt(Base):
     __tablename__ = "historique_emprunts"
 
@@ -75,7 +75,7 @@ class HistoriqueEmprunt(Base):
     adherent = relationship("Adherent", back_populates="historique")
     livre = relationship("Livre", back_populates="historique")
 
-# Modèle pour les notifications
+
 class Notification(Base):
     __tablename__ = "notifications"
 

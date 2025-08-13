@@ -34,12 +34,12 @@ class BooksToScraper:
                     self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1")))
                     
                     book_data.append({
-                        "Title": self.get_text("h1", "Unknown Title"),
-                        "Price": self.get_text(".price_color", "Unknown Price"),
-                        "Image": self.get_attr(".item img", "src", "No Image"),
+                        "titre": self.get_text("h1", "Unknown Title"),
+                        "prix": self.get_text(".price_color", "Unknown Price"),
+                        "image_url": self.get_attr(".item img", "src", "No Image"),
                         "Rating": self.get_rating(),
-                        "Availability": self.get_text(".availability", "Unknown Availability").strip(),
-                        "Description": self.get_text("#product_description + p", "No description available")
+                        "stock": self.get_text(".availability", "Unknown Availability").strip(),
+                        "description": self.get_text("#product_description + p", "No description available")
                     })
                     self.driver.back()
                 
