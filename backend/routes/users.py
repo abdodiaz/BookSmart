@@ -31,4 +31,8 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), 
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Identifiants invalides")
     access_token = create_access_token(data={"sub": user.email})
     response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+<<<<<<< HEAD
     return {"access_token": access_token, "token_type": "bearer"}
+=======
+    return {"access_token": access_token, "token_type": "bearer"}
+>>>>>>> sara

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey, TIMESTAMP
+=======
+from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey, TIMESTAMP,Float
+>>>>>>> sara
 from sqlalchemy.orm import relationship
 from backend.database import Base
 from datetime import datetime
@@ -25,6 +29,10 @@ class Livre(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     titre = Column(String(255), nullable=False)
+<<<<<<< HEAD
+=======
+    prix = Column(Float, nullable=False)
+>>>>>>> sara
     description = Column(Text)
     image_url = Column(Text)
     stock = Column(Integer, default=1)
@@ -84,4 +92,8 @@ class Notification(Base):
     date = Column(TIMESTAMP, default=datetime.utcnow)
     lu = Column(Boolean, default=False)
 
+<<<<<<< HEAD
     adherent = relationship("Adherent", back_populates="notifications")
+=======
+    adherent = relationship("Adherent", back_populates="notifications")
+>>>>>>> sara

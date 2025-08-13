@@ -19,9 +19,17 @@ class AdherentOut(AdherentBase):
         orm_mode = True
 
 
+<<<<<<< HEAD
 # Livre
 class LivreBase(BaseModel):
     titre: str
+=======
+#Title,Price,Image,Rating,Availability,Description
+# Livre
+class LivreBase(BaseModel):
+    titre: str
+    prix: Optional[float]
+>>>>>>> sara
     description: Optional[str]
     image_url: Optional[str]
     stock: int
@@ -60,4 +68,8 @@ class EmpruntOut(EmpruntBase):
     date_retour_effectif: Optional[date]
 
     class Config:
+<<<<<<< HEAD
         orm_mode = True
+=======
+        orm_mode = True
+>>>>>>> sara

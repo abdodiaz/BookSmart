@@ -28,4 +28,8 @@ def create_adherent(db: Session, adherent: schemas.AdherentCreate):
 
 # Rechercher un adhérent par email
 def get_adherent_by_email(db: Session, email: str):
+<<<<<<< HEAD
     return db.query(models.Adherent).filter(models.Adherent.email == email).first()
+=======
+    return db.query(models.Adherent).filter(models.Adherent.email == email).first()
+>>>>>>> sara
