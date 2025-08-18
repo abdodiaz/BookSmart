@@ -1,23 +1,45 @@
+import joblib
 import pandas as pd
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import joblib
+from sqlalchemy.orm import Session
+from backend import crud
 
-def modele_recommandation(df):
+class Recommender:
+    def __init__(self, db: Session):
+        self.db = db
+        self.livres = self.load_livres()
+        self.vectorizer = None
+        self.tfidf_matrix = None
+        self.load_or_train_model()
 
-    # Extraire la colonne 'description' pour le traitement
-    descriptions = df['description']
+    def load_livres(self):
+        livres = crud.get_all_livres(self.db)
+        data = []
+        for livre in livres:
+            data.append({
+                "id": livre.id,
+                "titre": livre.titre,
+                "description": livre.description or livre.titre
+            })
+        return pd.DataFrame(data)
 
-    # TF-IDF Vectorizer
-    vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
-    tfidf_matrix = vectorizer.fit_transform(descriptions)
+    def load_or_train_model(self):
+        try:
+            self.vectorizer = joblib.load(r'backend/recommender/tfidf_vectorizer.joblib')
+            self.tfidf_matrix = joblib.load(r'backend/recommender/cosine_similarity_matrix.joblib')
+        except FileNotFoundError:
+            self.train_model()
 
-    # Calcul de la matrice de similarité cosinus
-    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+    def train_model(self):
+        self.vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
+        self.tfidf_matrix = self.vectorizer.fit_transform(self.livres['description'])
+        joblib.dump(self.vectorizer, r'backend/recommender/tfidf_vectorizer.joblib')
+        joblib.dump(self.tfidf_matrix, r'backend/recommender/cosine_similarity_matrix.joblib')
+        print("Modèle et matrice sauvegardés avec succès.")
 
-    # Sauvegarder le modèle vectorizer et la matrice de similarité
-    joblib.dump(vectorizer, r'C:\Users\lenovo\Documents\BookSmart\backend\recommender\tfidf_vectorizer.joblib')
-    joblib.dump(cosine_sim, r'C:\Users\lenovo\Documents\BookSmart\backend\recommender\cosine_similarity_matrix.joblib')
-
-    print("Modèle et matrice sauvegardés avec succès.")
+    def get_recommendations(self, description, top_n=5):
+        desc_vec = self.vectorizer.transform([description])
+        cosine_sim = cosine_similarity(desc_vec, self.tfidf_matrix).flatten()
+        top_indices = cosine_sim.argsort()[-top_n:][::-1]
+        return self.livres.iloc[top_indices].to_dict(orient='records')

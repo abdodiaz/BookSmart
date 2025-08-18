@@ -10,7 +10,7 @@ class Adherent(Base):
     id = Column(Integer, primary_key=True, index=True)
     nom = Column(String(100), nullable=False)
     email = Column(String(150), unique=True, nullable=False, index=True)
-    password = Column(Text, nullable=False)
+    hashed_password = Column(Text, nullable=False)
     role = Column(String(50), default="adherent")
     date_inscription = Column(TIMESTAMP, default=datetime.now)
 
