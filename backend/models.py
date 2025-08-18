@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey, TIMESTAMP,Float
+from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey, TIMESTAMP, Float
 from sqlalchemy.orm import relationship
 from backend.database import Base
 from datetime import datetime
-
 
 class Adherent(Base):
     __tablename__ = "adherents"
@@ -12,12 +11,12 @@ class Adherent(Base):
     email = Column(String(150), unique=True, nullable=False, index=True)
     hashed_password = Column(Text, nullable=False)
     role = Column(String(50), default="adherent")
-    date_inscription = Column(TIMESTAMP, default=datetime.now)
+    date_inscription = Column(TIMESTAMP, default=datetime.utcnow)
 
-    emprunts = relationship("Emprunt", back_populates="adherent",cascade="all, delete-orphan")
-    reservations = relationship("Reservation", back_populates="adherent",cascade="all, delete-orphan")
-    historique = relationship("HistoriqueEmprunt", back_populates="adherent",cascade="all, delete-orphan")
-    notifications = relationship("Notification", back_populates="adherent",cascade="all, delete-orphan")
+    emprunts = relationship("Emprunt", back_populates="adherent", cascade="all, delete-orphan")
+    reservations = relationship("Reservation", back_populates="adherent", cascade="all, delete-orphan")
+    historique = relationship("HistoriqueEmprunt", back_populates="adherent", cascade="all, delete-orphan")
+    notifications = relationship("Notification", back_populates="adherent", cascade="all, delete-orphan")
 
 
 class Livre(Base):
@@ -29,11 +28,11 @@ class Livre(Base):
     description = Column(Text)
     image_url = Column(Text)
     stock = Column(Integer, default=1)
-    rating = Column(Integer)
+    rating = Column(Float, default=0.0)
 
-    emprunts = relationship("Emprunt", back_populates="livre",cascade="all, delete-orphan")
-    reservations = relationship("Reservation", back_populates="livre",cascade="all, delete-orphan")
-    historique = relationship("HistoriqueEmprunt", back_populates="livre",cascade="all, delete-orphan")
+    emprunts = relationship("Emprunt", back_populates="livre", cascade="all, delete-orphan")
+    reservations = relationship("Reservation", back_populates="livre", cascade="all, delete-orphan")
+    historique = relationship("HistoriqueEmprunt", back_populates="livre", cascade="all, delete-orphan")
 
 
 class Emprunt(Base):
@@ -56,7 +55,7 @@ class Reservation(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_adherent = Column(Integer, ForeignKey("adherents.id", ondelete="CASCADE"))
     id_livre = Column(Integer, ForeignKey("livres.id", ondelete="CASCADE"))
-    date_reservation = Column(Date, default=datetime.now)
+    date_reservation = Column(Date, default=datetime.utcnow)
     statut = Column(String(50), default="en_attente")
 
     adherent = relationship("Adherent", back_populates="reservations")
@@ -69,8 +68,8 @@ class HistoriqueEmprunt(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_adherent = Column(Integer, ForeignKey("adherents.id", ondelete="CASCADE"))
     id_livre = Column(Integer, ForeignKey("livres.id", ondelete="CASCADE"))
-    note = Column(Integer)
-    date_emprunt = Column(Date, default=datetime.now)
+    note = Column(Float, nullable=True)
+    date_emprunt = Column(Date, default=datetime.utcnow)
 
     adherent = relationship("Adherent", back_populates="historique")
     livre = relationship("Livre", back_populates="historique")
