@@ -1,0 +1,3 @@
+/* Styles additionnels si tu veux peaufiner au-delà de Tailwind */
+input::placeholder { color: #9ca3af; } /* slate-400 */
+button:focus-visible { outline: 2px solid #a78bfa; outline-offset: 2px; } /* violet-300 */
